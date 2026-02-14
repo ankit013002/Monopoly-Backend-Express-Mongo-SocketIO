@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { gameIds } from "../utils/gameIds";
+import { gameExists } from "../utils/gameIds";
 
 interface GameExistenceRequest extends Request {
   body: {
@@ -15,10 +15,10 @@ function doesGameExist(
   const { gameId } = req.body;
 
   console.log(gameId);
-  console.log(gameIds);
+  console.log("Checking if game exists...");
 
-  if (!gameIds.find((id) => id === parseInt(gameId))) {
-    console.log("here");
+  if (!gameExists(parseInt(gameId))) {
+    console.log("Game does not exist");
     return res.status(400).json({
       message: `Game with id ${gameId} does not exist`,
     });

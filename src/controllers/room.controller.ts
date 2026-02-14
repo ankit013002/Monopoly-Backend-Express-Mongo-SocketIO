@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { gameIds } from "../utils/gameIds";
+import { gameIds, addGame, createNewGameState } from "../utils/gameIds";
 
 interface CreateGameRequest extends Request {
   body: {
@@ -29,9 +29,8 @@ const createGame = (req: CreateGameRequest, res: Response): void => {
 
   const gameId: number = Math.floor(Math.random() * 1000);
 
-  gameIds.push(gameId);
-
-  console.log(`GAME IDS: ${gameIds}`);
+  // Note: Game state will be created when player connects via socket
+  console.log(`GAME ID CREATED: ${gameId}`);
 
   res.status(200).json({
     message: `Room Created for ${numberOfPlayers} players`,
