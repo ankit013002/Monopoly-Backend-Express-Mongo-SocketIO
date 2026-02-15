@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { gameIds, addGame, createNewGameState } from "../utils/gameIds";
+import { gameIds, addGame } from "../utils/gameIds";
 
 interface CreateGameRequest extends Request {
   body: {

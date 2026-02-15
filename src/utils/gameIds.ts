@@ -1,53 +1,49 @@
+import { GameState } from "../types/gameState";
 import { PlayerType } from "../types/playerType";
 
-export type Games = Map<number, GameState>[];
+export type Games = Map<number, GameState>;
 
-export const games: Games = [];
+export const games: Games = new Map();
 
-interface GameState {
-  players: [
-    {
-      socketId: string;
-      player: PlayerType;
-    },
-  ];
-}
-
-const createNewGameState = (
-  gameId: number,
-  player: PlayerType,
+const createNewGame = (
+  player: string,
   socketId: string,
-): Map<number, GameState> => {
+  playerCount: number,
+): { gameId: Number; gameState: GameState } => {
+  const gameId: number = Math.floor(Math.random() * 10000);
+
   const gameState: GameState = {
+    playerCount,
     players: [
       {
         socketId,
-        player,
+        name: player,
       },
     ],
   };
 
-  const gameMap = new Map<number, GameState>();
-  gameMap.set(gameId, gameState);
+  addGame(gameId, gameState);
 
-  return gameMap;
+  return {
+    gameId,
+    gameState,
+  };
 };
 
-const addGame = (gameMap: Map<number, GameState>): void => {
-  games.push(gameMap);
+const addGame = (gameId: number, gameState: GameState): void => {
+  games.set(gameId, gameState);
 };
 
 const findGame = (gameId: number): GameState | undefined => {
-  for (const gameMap of games) {
-    if (gameMap.has(gameId)) {
-      return gameMap.get(gameId);
-    }
+  console.log(`INPUT ID: ${gameId}`);
+  console.log("GAMES:");
+  Array.from(games).forEach((game) => {
+    console.log(game);
+  });
+  if (games.has(gameId)) {
+    return games.get(gameId);
   }
   return undefined;
 };
 
-const gameExists = (gameId: number): boolean => {
-  return findGame(gameId) !== undefined;
-};
-
-export { games as gameIds, createNewGameState, addGame, findGame, gameExists };
+export { games as gameIds, createNewGame, addGame, findGame };
