@@ -69,6 +69,42 @@ const sockets = (server: HTTPServer): void => {
         gameState,
       });
     });
+
+    socket.on("start-game", (data) => {
+      const { gameId } = data;
+      const gameState = findGame(gameId);
+      if (!gameState) return;
+      if (gameState.players[0].socketId !== socket.id) return; // only host can start
+      io.to(gameId.toString()).emit("game-started", {
+        gameId,
+        playerCount: gameState.playerCount,
+      });
+    });
+
+    socket.on("join-game-room", (data) => {
+      const { gameId } = data;
+      console.log(`Socket ${socket.id} joining game room ${gameId}`);
+      socket.join(gameId.toString());
+
+      // Log all sockets in the room
+      const socketsInRoom = io.sockets.adapter.rooms.get(gameId.toString());
+      console.log(`Total sockets in room ${gameId}:`, socketsInRoom?.size || 0);
+    });
+
+    socket.on("ping-health", (data) => {
+      const { gameId } = data;
+      const gameData = findGame(gameId);
+      console.log(
+        `Ping received from ${gameData?.players.find((player) => player.socketId === socket.id)} for game`,
+        gameId,
+      );
+
+      // Send to everyone in the room INCLUDING the sender
+      io.to(gameId.toString()).emit("ping-health-response", {
+        message: "Server healthy",
+        from: socket.id,
+      });
+    });
   });
 };
 
