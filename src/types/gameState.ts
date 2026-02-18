@@ -1,11 +1,14 @@
-import { PlayerType } from "./playerType";
-
 export type GameState = {
   playerCount: number;
+  playerTurnIndex: number;
   players: [
     {
       socketId: string;
       name: string;
+      color: string;
+      balance: number;
+      ownedSpaces: number[];
+      position: number;
     },
   ];
 };

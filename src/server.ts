@@ -20,6 +20,6 @@ const server = app.listen(PORT, () =>
   console.log(`Server listening on: ${PORT}`),
 );
 
-console.log("Ready tp recieve socket communication");
+console.log("Ready to recieve socket communication");
 
 sockets(server);

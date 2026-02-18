@@ -1,5 +1,6 @@
 import { GameState } from "../types/gameState";
 import { PlayerType } from "../types/playerType";
+import { TOKEN_COLORS } from "./tokenColors";
 
 export type Games = Map<number, GameState>;
 
@@ -14,10 +15,15 @@ const createNewGame = (
 
   const gameState: GameState = {
     playerCount,
+    playerTurnIndex: -1,
     players: [
       {
         socketId,
         name: player,
+        color: TOKEN_COLORS[0],
+        balance: 1500,
+        ownedSpaces: [],
+        position: 0,
       },
     ],
   };
