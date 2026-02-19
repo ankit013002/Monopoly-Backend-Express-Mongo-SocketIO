@@ -52,4 +52,12 @@ const findGame = (gameId: number): GameState | undefined => {
   return undefined;
 };
 
+export const updateGame = (
+  gameId: number,
+  gameState: GameState,
+): GameState | undefined => {
+  games.set(gameId, gameState);
+  return games.get(gameId);
+};
+
 export { games as gameIds, createNewGame, addGame, findGame };
