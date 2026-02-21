@@ -12,7 +12,7 @@ async function connectToDB(): Promise<void> {
   }
 }
 
-connectToDB();
+// connectToDB();
 
 const PORT: string | number = process.env.PORT || 5001;
 

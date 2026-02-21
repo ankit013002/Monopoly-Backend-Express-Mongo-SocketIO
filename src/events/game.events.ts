@@ -1,6 +1,7 @@
 import { Server as SocketIOServer } from "socket.io";
 import { Socket } from "socket.io";
 import { findGame, updateGame } from "../utils/gameIds";
+import { SpaceType } from "../types/spaceType";
 
 export const movePlayer = (socket: Socket, io: SocketIOServer, data: any) => {
   const { newGameState, gameId } = data;
@@ -24,4 +25,56 @@ export const movePlayer = (socket: Socket, io: SocketIOServer, data: any) => {
   } else {
     console.log("GAME STATE DOES NOT EXIST");
   }
+};
+
+export const endTurn = (socket: Socket, io: SocketIOServer, data: any) => {
+  const { gameId } = data;
+
+  const gameIdNum = parseInt(gameId);
+  const gameState = findGame(gameIdNum);
+
+  if (!gameState) {
+    console.log("Game state not found for game ID: " + gameId);
+    return;
+  }
+
+  gameState.playerTurnIndex =
+    (gameState.playerTurnIndex + 1) % gameState.players.length;
+
+  io.to(gameIdNum.toString()).emit("game-state-update", {
+    gameId: gameIdNum,
+    gameState,
+  });
+};
+
+export const purchaseProperty = (
+  socket: Socket,
+  io: SocketIOServer,
+  data: any,
+) => {
+  const gameId = data.gameId as string;
+  const property = data.property as SpaceType;
+  const gameIdNum = parseInt(gameId);
+  const gameState = findGame(gameIdNum);
+
+  if (!gameState) {
+    console.log("Game state not found for game ID: " + gameId);
+    return;
+  }
+
+  gameState.players.map((player) => {
+    if (player.socketId === socket.id) {
+      if (!property.price) {
+        console.log("Property price not found for property ID: " + property.id);
+        return;
+      }
+      player.ownedSpaces.push(property.id);
+      player.balance -= property.price;
+    }
+  });
+
+  io.to(gameIdNum.toString()).emit("game-state-update", {
+    gameId: gameIdNum,
+    gameState,
+  });
 };

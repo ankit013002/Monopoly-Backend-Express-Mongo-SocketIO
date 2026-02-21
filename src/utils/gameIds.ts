@@ -47,6 +47,7 @@ const findGame = (gameId: number): GameState | undefined => {
     console.log(game);
   });
   if (games.has(gameId)) {
+    console.log(`Game with ID: ${gameId} found`);
     return games.get(gameId);
   }
   return undefined;

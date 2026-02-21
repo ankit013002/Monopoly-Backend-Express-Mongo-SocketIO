@@ -69,7 +69,13 @@ export const startGame = (socket: Socket, io: SocketIOServer, data: any) => {
   const gameState = findGame(gameId);
   if (!gameState) return;
   if (gameState.players[0].socketId !== socket.id) return;
-  io.to(gameId.toString()).emit("game-started", gameState);
+  console.log(`Inititalizing game state for game: `, gameState);
+  gameState.playerTurnIndex = Math.floor(
+    Math.random() * gameState.players.length,
+  );
+  io.to(gameId.toString()).emit("game-started", {
+    gameState,
+  });
 };
 
 export const joinGameRoom = (socket: Socket, io: SocketIOServer, data: any) => {
