@@ -25,5 +25,17 @@ export type SpaceType = {
   price?: number;
   group?: Group;
   icon?: string;
-  ownedBy?: string;
+  ownedBy?: {
+    socketId: string;
+    name: string;
+    color: string;
+  };
+};
+
+export type AllPropertiesType = {
+  bottomProperties: SpaceType[];
+  topProperties: SpaceType[];
+  leftProperties: SpaceType[];
+  rightProperties: SpaceType[];
+  corners: SpaceType[];
 };

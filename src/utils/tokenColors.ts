@@ -1,10 +1,10 @@
 export const TOKEN_COLORS = [
-  "bg-red-500",
-  "bg-blue-500",
-  "bg-green-500",
-  "bg-yellow-500",
-  "bg-purple-500",
-  "bg-pink-500",
-  "bg-orange-500",
-  "bg-teal-500",
+  "red-500",
+  "blue-500",
+  "green-500",
+  "yellow-500",
+  "purple-500",
+  "pink-500",
+  "orange-500",
+  "teal-500",
 ];

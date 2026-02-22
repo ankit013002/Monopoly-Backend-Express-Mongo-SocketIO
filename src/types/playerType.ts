@@ -1,3 +1,8 @@
 export type PlayerType = {
-  name: String;
+  socketId: string;
+  name: string;
+  color: string;
+  balance: number;
+  ownedSpaces: number[];
+  position: number;
 };

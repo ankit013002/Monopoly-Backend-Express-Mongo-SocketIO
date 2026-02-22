@@ -73,10 +73,20 @@ export const purchaseProperty = (
     }
   });
 
-  gameState.allProperties.map((space) => {
-    if (space.id === property.id) {
-      space.ownedBy = socket.id;
-    }
+  Object.values(gameState.allProperties).forEach((propertyArray) => {
+    propertyArray.forEach((space) => {
+      if (space.id === property.id) {
+        space.ownedBy = {
+          socketId: socket.id,
+          name: gameState.players.find(
+            (player) => player.socketId === socket.id,
+          )?.name as string,
+          color: gameState.players.find(
+            (player) => player.socketId === socket.id,
+          )?.color as string,
+        };
+      }
+    });
   });
 
   io.to(gameIdNum.toString()).emit("game-state-update", {
