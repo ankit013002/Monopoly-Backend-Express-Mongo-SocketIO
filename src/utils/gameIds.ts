@@ -1,5 +1,5 @@
 import { GameState } from "../types/gameState";
-import { PlayerType } from "../types/playerType";
+import { SpaceType } from "../types/spaceType";
 import { TOKEN_COLORS } from "./tokenColors";
 
 export type Games = Map<number, GameState>;
@@ -10,12 +10,14 @@ const createNewGame = (
   player: string,
   socketId: string,
   playerCount: number,
+  allProperties: SpaceType[],
 ): { gameId: Number; gameState: GameState } => {
   const gameId: number = Math.floor(Math.random() * 10000);
 
   const gameState: GameState = {
     playerCount,
     playerTurnIndex: -1,
+    allProperties,
     players: [
       {
         socketId,

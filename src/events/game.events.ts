@@ -73,6 +73,12 @@ export const purchaseProperty = (
     }
   });
 
+  gameState.allProperties.map((space) => {
+    if (space.id === property.id) {
+      space.ownedBy = socket.id;
+    }
+  });
+
   io.to(gameIdNum.toString()).emit("game-state-update", {
     gameId: gameIdNum,
     gameState,
