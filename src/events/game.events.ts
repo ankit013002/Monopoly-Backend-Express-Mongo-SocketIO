@@ -2,6 +2,7 @@ import { Server as SocketIOServer } from "socket.io";
 import { Socket } from "socket.io";
 import { findGame, updateGame } from "../utils/gameIds";
 import { SpaceType } from "../types/spaceType";
+import { error } from "console";
 
 export const movePlayer = (socket: Socket, io: SocketIOServer, data: any) => {
   const { newGameState, gameId } = data;
@@ -88,6 +89,32 @@ export const purchaseProperty = (
       }
     });
   });
+
+  io.to(gameIdNum.toString()).emit("game-state-update", {
+    gameId: gameIdNum,
+    gameState,
+  });
+};
+
+export const payRent = (socket: Socket, io: SocketIOServer, data: any) => {
+  const gameId = data.gameId as string;
+  const property = data.property as SpaceType;
+  const gameIdNum = parseInt(gameId);
+  const gameState = findGame(gameIdNum);
+
+  if (!property || !property.price) {
+    const errorMessage = `ERROR: Property ${property.name} has no price`;
+    console.log(errorMessage);
+    socket.to(gameIdNum.toString()).emit("error-state", { errorMessage });
+  } else {
+    gameState?.players.forEach((player) => {
+      if (player.socketId === socket.id) {
+        player.balance -= property.price!;
+      } else if (player.socketId === property.ownedBy?.socketId) {
+        player.balance += property.price!;
+      }
+    });
+  }
 
   io.to(gameIdNum.toString()).emit("game-state-update", {
     gameId: gameIdNum,

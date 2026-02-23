@@ -7,7 +7,12 @@ import {
   startGame,
 } from "./events/room.events";
 import { pingHealth } from "./events/general.events";
-import { endTurn, movePlayer, purchaseProperty } from "./events/game.events";
+import {
+  endTurn,
+  movePlayer,
+  payRent,
+  purchaseProperty,
+} from "./events/game.events";
 
 const sockets = (server: HTTPServer): void => {
   const io: SocketIOServer = require("socket.io")(server, {
@@ -37,6 +42,8 @@ const sockets = (server: HTTPServer): void => {
     socket.on("purchase-property", (data) =>
       purchaseProperty(socket, io, data),
     );
+
+    socket.on("pay-rent", (data) => payRent(socket, io, data));
   });
 };
 
