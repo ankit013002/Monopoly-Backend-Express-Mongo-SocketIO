@@ -1,14 +1,11 @@
-import { AllPropertiesType, SpaceType } from "./spaceType";
+import { lastRollType } from "./lastRollType";
+import { AllPropertiesType } from "./spaceType";
 
 export type GameState = {
   playerCount: number;
   playerTurnIndex: number;
   allProperties: AllPropertiesType;
-  lastRoll: {
-    d1: number;
-    d2: number;
-    total: number;
-  };
+  lastRoll: lastRollType;
   players: [
     {
       socketId: string;

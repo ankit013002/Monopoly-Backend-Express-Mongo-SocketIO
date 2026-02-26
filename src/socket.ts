@@ -9,6 +9,7 @@ import {
 import { pingHealth } from "./events/general.events";
 import {
   endTurn,
+  handleDiceRoll,
   movePlayer,
   payRent,
   purchaseProperty,
@@ -44,6 +45,8 @@ const sockets = (server: HTTPServer): void => {
     );
 
     socket.on("pay-rent", (data) => payRent(socket, io, data));
+
+    socket.on("dice-roll", (data) => handleDiceRoll(socket, io, data));
   });
 };
 

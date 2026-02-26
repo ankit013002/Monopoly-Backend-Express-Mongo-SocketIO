@@ -3,6 +3,7 @@ import { Socket } from "socket.io";
 import { findGame, updateGame } from "../utils/gameIds";
 import { SpaceType } from "../types/spaceType";
 import { error } from "console";
+import { lastRollType } from "../types/lastRollType";
 
 export const movePlayer = (socket: Socket, io: SocketIOServer, data: any) => {
   const { newGameState, gameId } = data;
@@ -115,6 +116,30 @@ export const payRent = (socket: Socket, io: SocketIOServer, data: any) => {
       }
     });
   }
+
+  io.to(gameIdNum.toString()).emit("game-state-update", {
+    gameId: gameIdNum,
+    gameState,
+  });
+};
+
+export const handleDiceRoll = (
+  socket: Socket,
+  io: SocketIOServer,
+  data: any,
+) => {
+  const gameId = data.gameId as string;
+  const gameIdNum = parseInt(gameId);
+  const diceRoll = data.diceRoll as lastRollType;
+
+  const gameState = findGame(gameIdNum);
+
+  if (!gameState) {
+    console.log("Game state not found for game ID: " + gameId);
+    return;
+  }
+
+  gameState.lastRoll = diceRoll;
 
   io.to(gameIdNum.toString()).emit("game-state-update", {
     gameId: gameIdNum,
