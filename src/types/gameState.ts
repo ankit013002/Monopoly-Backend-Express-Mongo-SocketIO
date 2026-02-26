@@ -4,6 +4,11 @@ export type GameState = {
   playerCount: number;
   playerTurnIndex: number;
   allProperties: AllPropertiesType;
+  lastRoll: {
+    d1: number;
+    d2: number;
+    total: number;
+  };
   players: [
     {
       socketId: string;

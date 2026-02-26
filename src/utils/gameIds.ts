@@ -18,6 +18,11 @@ const createNewGame = (
     playerCount,
     playerTurnIndex: -1,
     allProperties,
+    lastRoll: {
+      d1: 0,
+      d2: 0,
+      total: 0,
+    },
     players: [
       {
         socketId,
