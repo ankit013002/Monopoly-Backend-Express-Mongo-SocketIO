@@ -14,6 +14,7 @@ import {
   payRent,
   purchaseProperty,
 } from "./events/game.events";
+import { requestTrade } from "./events/trade.events";
 
 const sockets = (server: HTTPServer): void => {
   const io: SocketIOServer = require("socket.io")(server, {
@@ -47,6 +48,8 @@ const sockets = (server: HTTPServer): void => {
     socket.on("pay-rent", (data) => payRent(socket, io, data));
 
     socket.on("dice-roll", (data) => handleDiceRoll(socket, io, data));
+
+    socket.on("request-trade", (data) => requestTrade(socket, io, data));
   });
 };
 
