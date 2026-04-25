@@ -17,11 +17,18 @@ export const requestTrade = (
     return;
   }
 
+  if (socket.id !== tradeOffer.from) {
+    console.log(`Unauthorized trade request attempt by ${socket.id}`);
+    return;
+  }
+
   const fromPlayer = gameState.players.find((p) => p.socketId === socket.id);
   const toPlayer = gameState.players.find((p) => p.socketId === tradeOffer.to);
 
   if (!fromPlayer || !toPlayer) {
-    console.log("Invalid trade request: one or both players are not in the game");
+    console.log(
+      "Invalid trade request: one or both players are not in the game",
+    );
     return;
   }
 
@@ -69,8 +76,10 @@ export const acceptTrade = (
   const requestMoney = trade.request.money;
 
   if (
-    !Number.isFinite(offerMoney) || offerMoney < 0 ||
-    !Number.isFinite(requestMoney) || requestMoney < 0
+    !Number.isFinite(offerMoney) ||
+    offerMoney < 0 ||
+    !Number.isFinite(requestMoney) ||
+    requestMoney < 0
   ) {
     console.log("Invalid money amounts in trade offer");
     return;
@@ -95,13 +104,25 @@ export const acceptTrade = (
     }
   }
 
+  if (fromPlayer.balance - offerMoney + requestMoney < 0) {
+    console.log("fromPlayer would go bankrupt from this trade");
+    return;
+  }
+
+  if (toPlayer.balance - requestMoney + offerMoney < 0) {
+    console.log("toPlayer would go bankrupt from this trade");
+    return;
+  }
+
   fromPlayer.balance -= offerMoney;
   toPlayer.balance += offerMoney;
   toPlayer.balance -= requestMoney;
   fromPlayer.balance += requestMoney;
 
   trade.offer.properties.forEach((propId) => {
-    fromPlayer.ownedSpaces = fromPlayer.ownedSpaces.filter((id) => id !== propId);
+    fromPlayer.ownedSpaces = fromPlayer.ownedSpaces.filter(
+      (id) => id !== propId,
+    );
     if (!toPlayer.ownedSpaces.includes(propId)) {
       toPlayer.ownedSpaces.push(propId);
     }
