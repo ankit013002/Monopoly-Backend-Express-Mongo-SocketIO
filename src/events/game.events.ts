@@ -75,7 +75,7 @@ export const purchaseProperty = (
     }
   });
 
-  Object.values(gameState.allProperties).forEach((propertyArray) => {
+  Object.values(gameState.allSpaces).forEach((propertyArray) => {
     propertyArray.forEach((space) => {
       if (space.id === property.id) {
         space.ownedBy = {

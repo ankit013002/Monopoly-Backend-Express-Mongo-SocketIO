@@ -127,7 +127,7 @@ export const acceptTrade = (
       toPlayer.ownedSpaces.push(propId);
     }
 
-    Object.values(gameState.allProperties).forEach((arr) => {
+    Object.values(gameState.allSpaces).forEach((arr) => {
       arr.forEach((space) => {
         if (space.id === propId) {
           space.ownedBy = {
@@ -146,7 +146,7 @@ export const acceptTrade = (
       fromPlayer.ownedSpaces.push(propId);
     }
 
-    Object.values(gameState.allProperties).forEach((arr) => {
+    Object.values(gameState.allSpaces).forEach((arr) => {
       arr.forEach((space) => {
         if (space.id === propId) {
           space.ownedBy = {
