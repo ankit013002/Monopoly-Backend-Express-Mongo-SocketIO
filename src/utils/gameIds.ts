@@ -1,3 +1,4 @@
+import { CardType } from "../types/cardType";
 import { GameState } from "../types/gameState";
 import { AllSpacesType, SpaceType } from "../types/spaceType";
 import { TOKEN_COLORS } from "./tokenColors";
@@ -11,6 +12,8 @@ const createNewGame = (
   socketId: string,
   playerCount: number,
   allSpaces: AllSpacesType,
+  chanceCards: CardType[],
+  communityCards: CardType[],
 ): { gameId: Number; gameState: GameState } => {
   const gameId: number = Math.floor(Math.random() * 10000);
 
@@ -18,6 +21,8 @@ const createNewGame = (
     playerCount,
     playerTurnIndex: -1,
     allSpaces,
+    chanceCards,
+    communityCards,
     lastRoll: {
       d1: 0,
       d2: 0,

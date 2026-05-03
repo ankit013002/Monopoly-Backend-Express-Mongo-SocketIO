@@ -6,13 +6,15 @@ import { TOKEN_COLORS } from "../utils/tokenColors";
 let colorIndex = 1;
 
 export const createGame = (socket: Socket, io: SocketIOServer, data: any) => {
-  const { player, playerCount, allSpaces } = data;
+  const { player, playerCount, allSpaces, chanceCards, communityCards } = data;
   console.log(`${player} created a game`);
   const { gameId, gameState } = createNewGame(
     player,
     socket.id,
     playerCount,
     allSpaces,
+    chanceCards,
+    communityCards
   );
   console.log(`Game created and added to games array: `);
   Array.from(games).forEach((game) => {
